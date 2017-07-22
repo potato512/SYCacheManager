@@ -1,5 +1,5 @@
 # SYCacheManager
-缓存封装
+缓存数据管理
 使用FMDB、LKDBHelper进行二次封装使用。
 
 # 效果图
@@ -62,3 +62,5 @@ NSString *company = ((UITextField *)[self.editView viewWithTag:1002]).text;
 NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
 [[SYCacheManager shareCache] deleteModel:[LKDBModel class] where:where];
 ~~~ 
+
+
