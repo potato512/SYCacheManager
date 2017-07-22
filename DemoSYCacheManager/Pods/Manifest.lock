@@ -1,0 +1,18 @@
+PODS:
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - LKDBHelper (2.1.9):
+    - FMDB
+
+DEPENDENCIES:
+  - FMDB (~> 2.6.2)
+  - LKDBHelper (~> 2.1.9)
+
+SPEC CHECKSUMS:
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  LKDBHelper: 78e6c0de99f45375892223a334535d745a123dbd
+
+PODFILE CHECKSUM: bcd1d5ef1d43f832c2518c91773dff0c62d2b590
+
+COCOAPODS: 1.2.1.beta.1
