@@ -9,22 +9,24 @@
 ![LKDBHelper](./LKDBHelper.gif)
 
 # 使用示例
+
+### 导入头文件
 ~~~ javascript
 #import "SYCacheManager.h"
 ~~~
 
+### 创建表
 ~~~ javascript
-// 创建表
 [[SYCacheManager shareCache] newTableWithModel:[LKDBModel class]];
 ~~~
 
+### 删除表
 ~~~ javascript
-// 删除表
 [[SYCacheManager shareCache] deleteTableWithModel:[LKDBModel class]];
 ~~~ 
 
+### 保存
 ~~~ javascript
-// 保存
 LKDBModel *model = [LKDBModel new];
 model.name = @"devZhang";
 model.age = @"30";
@@ -33,39 +35,53 @@ model.company = @"VSTECS";
 [[SYCacheManager shareCache] saveModel:model];
 ~~~
 
+### 删除
 ~~~ javascript
-// 删除
+// 方法1
 NSString *company = @"VSTECS";
 NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
-
-// 方法1
 [[SYCacheManager shareCache] deleteModel:[LKDBModel class] where:where];
+~~~
 
+~~~ javascript
 // 方法2
+NSString *company = @"VSTECS";
+NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
 LKDBModel *model = array.firstObject;
 [self.cacheManager deleteModel:model];
+~~~
 
+~~~ javascript
 // 方法3
+NSString *company = @"VSTECS";
+NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
+NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+LKDBModel *model = array.firstObject;
 [self.cacheManager deleteModel:model callback:^(BOOL result) {
 
 }];
 ~~~ 
 
+### 修改
 ~~~ javascript
-// 修改
+// 方法1
 NSString *name = @"devZhang";
 NSString *where = [NSString stringWithFormat:@"name = '%@'", name];
-
-// 方法1
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
 LKDBModel *model = array.firstObject;
 [[SYCacheManager shareCache] updateModel:model];
+~~~
 
+~~~ javascript
 // 方法2
 [self.cacheManager updateModel:[LKDBModel class] value:@"age = 1, company = 'company:1'" where:where];
+~~~
 
-// 方法3
+~~~ javascript
+// 方法3 条件更新回调
+NSString *name = @"devZhang";
+NSString *where = [NSString stringWithFormat:@"name = '%@'", name];
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
 LKDBModel *model = array.firstObject;
 [self.cacheManager updateModel:model callback:^(BOOL result) {
@@ -73,37 +89,56 @@ LKDBModel *model = array.firstObject;
 }];
 ~~~ 
 
+### 查找
 ~~~ javascript
-// 查找
+// 方法1 查找符合条件的所有数据
 NSString *age = @"30";
 NSString *where = [NSString stringWithFormat:@"age > '%d'", age];
-
-// 方法1 查找符合条件的所有数据
 NSArray *array = [[SYCacheManager shareCache] readModel:[LKDBModel class] where:where];
+~~~
 
+~~~ javascript
 // 方法2 查找符合条件的，按年龄升序的，第11个数据开始的10个数据，且只要姓名和年龄信息
+NSString *age = @"30";
+NSString *where = [NSString stringWithFormat:@"age > '%d'", age];
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] column:@"name,age" where:where orderBy:@"age asc" offset:10 count:10];
+~~~
 
-// 方法3
+~~~ javascript
+// 方法3 条件查找回调
+NSString *age = @"30";
+NSString *where = [NSString stringWithFormat:@"age > '%d'", age];
 [self.cacheManager readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
 
 }];
 ~~~ 
 
+### 删除
 ~~~ javascript
-// 删除
+// 方法1 条件删除
 NSString *company = @"VSTECS";
 NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
-
-// 方法1
 [[SYCacheManager shareCache] deleteModel:[LKDBModel class] where:where];
+~~~
 
-// 方法2
+~~~ javascript
+// 方法2 条件删除
+NSString *company = @"VSTECS";
+NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
 LKDBModel *model = array.firstObject;
 [self.cacheManager deleteModel:model];
+~~~
 
-// 方法3
+~~~ javascript
+// 方法3 删除所有数据
+[self.cacheManager deleteAllModel:[LKDBModel class]];
+~~~
+
+~~~ javascript
+// 方法4 条件删除回调方法
+NSString *company = @"VSTECS";
+NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
 NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
 LKDBModel *model = array.firstObject;
 [self.cacheManager deleteModel:model callback:^(BOOL result) {
