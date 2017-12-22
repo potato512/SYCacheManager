@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *company;
-@property (nonatomic, strong) NSString *age;
+@property (nonatomic, assign) int age;
 
 @end

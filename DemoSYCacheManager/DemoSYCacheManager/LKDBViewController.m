@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) UIView *editView;
 @property (nonatomic, strong) SYCacheManager *cacheManager;
-@property (nonatomic, strong) LKDBModel *model;
 
 @property (nonatomic, strong) NSArray *array;
 
@@ -79,58 +78,91 @@
     if (0 == indexPath.row)
     {
         // 存数据
-        if (self.model)
+        // 单个存
+//        LKDBModel *model = [LKDBModel new];
+//        model.name = ((UITextField *)[self.editView viewWithTag:1000]).text;
+//        model.age = ((UITextField *)[self.editView viewWithTag:1001]).text.intValue;
+//        model.company = ((UITextField *)[self.editView viewWithTag:1002]).text;
+//
+//        [self.cacheManager saveModel:model];
+        
+        // 批量数据
+        for (int i = 0; i < 100; i++)
         {
             LKDBModel *model = [LKDBModel new];
-            model.name = ((UITextField *)[self.editView viewWithTag:1000]).text;
-            model.age = ((UITextField *)[self.editView viewWithTag:1001]).text;
-            model.company = ((UITextField *)[self.editView viewWithTag:1002]).text;
+            model.name = [NSString stringWithFormat:@"name:%@",@(i + 1)];
+            model.age = (arc4random() % 100 + i);
+            model.company = [NSString stringWithFormat:@"company:%@", @(i + 1)];
             
             [self.cacheManager saveModel:model];
-        }
-        else
-        {
-            self.model = [LKDBModel new];
-            self.model.name = @"devZhang";
-            self.model.age = @"30";
-            self.model.company = @"VSTECS";
-            
-            [self.cacheManager saveModel:self.model];
         }
     }
     else if (1 == indexPath.row)
     {
         // 取数据
-        NSString *company = ((UITextField *)[self.editView viewWithTag:1002]).text;
-        NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
-        where = ((company && 0 < company.length) ? where : nil);
-        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
-        for (LKDBModel *model in array)
-        {
-            NSString *value = [NSString stringWithFormat:@"name = %@, age = %@, company = %@", model.name, model.age, model.company];
-            NSLog(@"model = %@", value);
-        }
+        int age = ((UITextField *)[self.editView viewWithTag:1001]).text.intValue;
+        NSString *where = [NSString stringWithFormat:@"age > '%d'", age];
+        // 方法1
+//        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+        // 方法2
+//        NSArray *array = [self.cacheManager readModel:[LKDBModel class] column:nil where:where orderBy:nil offset:10 count:10];
+//        NSLog(@"search count = %d", array.count);
+//        for (LKDBModel *model in array)
+//        {
+//            NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+//            NSLog(@"model = %@", value);
+//        }
+        // 方法3
+        [self.cacheManager readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
+            for (LKDBModel *model in array)
+            {
+                NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+                NSLog(@"model = %@", value);
+            }
+        }];
     }
     else if (2 == indexPath.row)
     {
         // 删除数据
-        //
-//        [self.cacheManager deleteModel:self.model];
-        //
         NSString *company = ((UITextField *)[self.editView viewWithTag:1002]).text;
+        company = [NSString stringWithFormat:@"company:%@", company];
         NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
-        [self.cacheManager deleteModel:[LKDBModel class] where:where];
+        // 方法1
+//        [self.cacheManager deleteModel:[LKDBModel class] where:where];
+        // 方法2
+        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+        LKDBModel *model = array.firstObject;
+//        [self.cacheManager deleteModel:model];
+        // 方法3
+//        [self.cacheManager deleteAllModel:[LKDBModel class]];
+        // 方法4
+        [self.cacheManager deleteModel:model callback:^(BOOL result) {
+            
+        }];
     }
     else if (3 == indexPath.row)
     {
         // 修改数据
-        
-        if (self.model)
-        {
-            self.model.age = @"30+1";
-        }
-        
-        [self.cacheManager updateModel:self.model];
+        NSString *name = ((UITextField *)[self.editView viewWithTag:1000]).text;
+        name = [NSString stringWithFormat:@"name:%@", name];
+        NSString *where = [NSString stringWithFormat:@"name = '%@'", name];
+        // 方法1
+        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+        NSLog(@"search count = %d", array.count);
+        LKDBModel *model = array.firstObject;
+        NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+        NSLog(@"model = %@", value);
+        model.age += 5;
+//        [self.cacheManager updateModel:model];
+//        value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+//        NSLog(@"model = %@", value);
+        // 方法2
+//        [self.cacheManager updateModel:[LKDBModel class] value:@"age = 1, company = 'company:1'" where:where];
+        // 方法3
+        [self.cacheManager updateModel:model callback:^(BOOL result) {
+            NSString *valuetmp = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+            NSLog(@"model = %@", valuetmp);
+        }];
     }
     else if (4 == indexPath.row)
     {
