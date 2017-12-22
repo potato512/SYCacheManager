@@ -27,6 +27,8 @@
     
     self.title = @"LKDB缓存管理";
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"del" style:UIBarButtonItemStyleDone target:self action:@selector(deleteClick)];
+    
     self.array = @[@"存数据", @"取数据", @"删除数据", @"修改数据", @"创建表", @"删除表"];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -55,6 +57,11 @@
     }
 }
 
+- (void)deleteClick
+{
+    [self.cacheManager deleteAllModel:[LKDBModel class]];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.array.count;
@@ -79,23 +86,34 @@
     {
         // 存数据
         // 单个存
-//        LKDBModel *model = [LKDBModel new];
-//        model.name = ((UITextField *)[self.editView viewWithTag:1000]).text;
-//        model.age = ((UITextField *)[self.editView viewWithTag:1001]).text.intValue;
-//        model.company = ((UITextField *)[self.editView viewWithTag:1002]).text;
-//
-//        [self.cacheManager saveModel:model];
-        
-        // 批量数据
-        for (int i = 0; i < 100; i++)
+        NSMutableArray *array = [NSMutableArray new];
+        for (int i = 0; i < 3; i++)
         {
             LKDBModel *model = [LKDBModel new];
-            model.name = [NSString stringWithFormat:@"name:%@",@(i + 1)];
-            model.age = (arc4random() % 100 + i);
-            model.company = [NSString stringWithFormat:@"company:%@", @(i + 1)];
+            model.name = [NSString stringWithFormat:@"iOS先生-%@", @(i)];
+            model.age = (arc4random() % 100 + 1);
+            model.company = @"伟仕佳杰";
             
-            [self.cacheManager saveModel:model];
+            [array addObject:model];
         }
+        LKDBModel *model = [LKDBModel new];
+        model.name = @"iOS张先生";
+        model.age = (arc4random() % 100 + 1);
+        model.company = @"伟仕佳杰";
+        model.friends = array; //@[@"001", @"002", @"003", model1];
+        
+        [self.cacheManager saveModel:model];
+        
+        // 批量数据
+//        for (int i = 0; i < 100; i++)
+//        {
+//            LKDBModel *model = [LKDBModel new];
+//            model.name = [NSString stringWithFormat:@"name:%@",@(i + 1)];
+//            model.age = (arc4random() % 100 + i);
+//            model.company = [NSString stringWithFormat:@"company:%@", @(i + 1)];
+//
+//            [self.cacheManager saveModel:model];
+//        }
     }
     else if (1 == indexPath.row)
     {
@@ -116,8 +134,13 @@
         [self.cacheManager readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
             for (LKDBModel *model in array)
             {
-                NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+                NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@, friends = %@", model.name, model.age, model.company, model.friends];
                 NSLog(@"model = %@", value);
+                for (LKDBModel *subModel in model.friends)
+                {
+                    NSString *subValue = [NSString stringWithFormat:@"name = %@, age = %d, company = %@, friends = %@", subModel.name, subModel.age, subModel.company, subModel.friends];
+                    NSLog(@"sub model = %@", subValue);
+                }
             }
         }];
     }

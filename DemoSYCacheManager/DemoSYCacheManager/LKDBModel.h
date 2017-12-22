@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *company;
 @property (nonatomic, assign) int age;
 
+@property (nonatomic, strong) NSArray *friends;
+
 @end
