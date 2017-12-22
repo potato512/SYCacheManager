@@ -128,17 +128,17 @@
         company = [NSString stringWithFormat:@"company:%@", company];
         NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
         // 方法1
-//        [self.cacheManager deleteModel:[LKDBModel class] where:where];
+        [self.cacheManager deleteModel:[LKDBModel class] where:where];
         // 方法2
-        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
-        LKDBModel *model = array.firstObject;
+//        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+//        LKDBModel *model = array.firstObject;
 //        [self.cacheManager deleteModel:model];
         // 方法3
 //        [self.cacheManager deleteAllModel:[LKDBModel class]];
         // 方法4
-        [self.cacheManager deleteModel:model callback:^(BOOL result) {
-            
-        }];
+//        [self.cacheManager deleteModel:model callback:^(BOOL result) {
+//
+//        }];
     }
     else if (3 == indexPath.row)
     {

@@ -119,11 +119,9 @@
         return;
     }
     
-    SYNetworkCache *cache;
-    NSArray *array = [[SYCacheManager shareCache] readModel:[SYNetworkCache class] where:nil];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"cacheKey == %@",urlKey];
-    NSArray *results = [array filteredArrayUsingPredicate:predicate];
-    cache = results.firstObject;
+    NSString *where = [NSString stringWithFormat:@"cacheKey = '%@'", urlKey];
+    NSArray *array = [[SYCacheManager shareCache] readModel:[SYNetworkCache class] where:where];
+    SYNetworkCache *cache = array.firstObject;
     
     [[SYCacheManager shareCache] deleteModel:cache];
 }

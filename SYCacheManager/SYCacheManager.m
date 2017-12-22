@@ -379,9 +379,12 @@ static NSString *const dataName = @"SYFMDB.db";
     }];
 }
 
-- (void)deleteAllModel:(Class)class
+- (BOOL)deleteAllModel:(Class)class
 {
-    [LKDBHelper clearTableData:class];
+//    [LKDBHelper clearTableData:class];
+    BOOL isResult = [self.dataHelper deleteWithClass:class where:nil];
+    NSLog(@"deleteModel = %@", (isResult ? @"success" : @"error"));
+    return isResult;
 }
 
 #pragma mark 查找数据

@@ -118,13 +118,13 @@
 /// 删除指定条件的数据
 - (void)deleteModel:(Class)class where:(id)where callback:(void (^)(BOOL result))callback;
 /**
- *  删除所有的数据（无效，弃用）
+ *  删除所有的数据
  *
  *  @param class model
  *
  *  @return
  */
-- (void)deleteAllModel:(Class)class;
+- (BOOL)deleteAllModel:(Class)class;
 
 /**
  *  查找数据
