@@ -146,7 +146,21 @@ LKDBModel *model = array.firstObject;
 }];
 ~~~
 
+~~~ javascript
+// 销毁单例
+[SYCacheManager releaseCache];
+
+// 重置单例数据库类型别名
+NSString *userType = [NSString stringWithFormat:@"%@", @(arc4random() % 1000 + 1)];
+[SYCacheManager initializeWithType:userType];
+~~~ 
+
 # 修改说明
+* 版本号：1.1.0
+  * 修改时间：20171231
+  * 新增单例销毁方法
+  * 新增单例重置数据库类型别名
+
 * 版本号：1.0.2
   * 修改时间：20171222
   * 修改内容：

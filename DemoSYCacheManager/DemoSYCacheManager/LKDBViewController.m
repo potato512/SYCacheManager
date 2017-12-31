@@ -13,7 +13,7 @@
 @interface LKDBViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UIView *editView;
-@property (nonatomic, strong) SYCacheManager *cacheManager;
+//@property (nonatomic, strong) SYCacheManager *cacheManager;
 
 @property (nonatomic, strong) NSArray *array;
 
@@ -29,7 +29,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"del" style:UIBarButtonItemStyleDone target:self action:@selector(deleteClick)];
     
-    self.array = @[@"存数据", @"取数据", @"删除数据", @"修改数据", @"创建表", @"删除表"];
+    self.array = @[@"存数据", @"取数据", @"删除数据", @"修改数据", @"创建表", @"删除表", @"新数据库"];
     
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [self.view addSubview:tableView];
@@ -59,7 +59,8 @@
 
 - (void)deleteClick
 {
-    [self.cacheManager deleteAllModel:[LKDBModel class]];
+//    [self.cacheManager deleteAllModel:[LKDBModel class]];
+    [[SYCacheManager shareCache] deleteAllModel:[LKDBModel class]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -102,7 +103,8 @@
         model.company = @"伟仕佳杰";
         model.friends = array; //@[@"001", @"002", @"003", model1];
         
-        [self.cacheManager saveModel:model];
+//        [self.cacheManager saveModel:model];
+        [[SYCacheManager shareCache] saveModel:model];
         
         // 批量数据
 //        for (int i = 0; i < 100; i++)
@@ -113,6 +115,7 @@
 //            model.company = [NSString stringWithFormat:@"company:%@", @(i + 1)];
 //
 //            [self.cacheManager saveModel:model];
+//            [[SYCacheManager shareCache] saveModel:model];
 //        }
     }
     else if (1 == indexPath.row)
@@ -122,8 +125,10 @@
         NSString *where = [NSString stringWithFormat:@"age > '%d'", age];
         // 方法1
 //        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+//        NSArray *array = [[SYCacheManager shareCache] readModel:[LKDBModel class] where:where];
         // 方法2
 //        NSArray *array = [self.cacheManager readModel:[LKDBModel class] column:nil where:where orderBy:nil offset:10 count:10];
+//        NSArray *array = [[SYCacheManager shareCache] readModel:[LKDBModel class] column:nil where:where orderBy:nil offset:10 count:10];
 //        NSLog(@"search count = %d", array.count);
 //        for (LKDBModel *model in array)
 //        {
@@ -131,7 +136,19 @@
 //            NSLog(@"model = %@", value);
 //        }
         // 方法3
-        [self.cacheManager readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
+//        [self.cacheManager readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
+//            for (LKDBModel *model in array)
+//            {
+//                NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@, friends = %@", model.name, model.age, model.company, model.friends];
+//                NSLog(@"model = %@", value);
+//                for (LKDBModel *subModel in model.friends)
+//                {
+//                    NSString *subValue = [NSString stringWithFormat:@"name = %@, age = %d, company = %@, friends = %@", subModel.name, subModel.age, subModel.company, subModel.friends];
+//                    NSLog(@"sub model = %@", subValue);
+//                }
+//            }
+//        }];
+        [[SYCacheManager shareCache] readModel:[LKDBModel class] where:where callback:^(NSMutableArray *array) {
             for (LKDBModel *model in array)
             {
                 NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@, friends = %@", model.name, model.age, model.company, model.friends];
@@ -151,16 +168,22 @@
         company = [NSString stringWithFormat:@"company:%@", company];
         NSString *where = [NSString stringWithFormat:@"company = '%@'", company];
         // 方法1
-        [self.cacheManager deleteModel:[LKDBModel class] where:where];
+//        [self.cacheManager deleteModel:[LKDBModel class] where:where];
+        [[SYCacheManager shareCache] deleteModel:[LKDBModel class] where:where];
         // 方法2
 //        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+//        NSArray *array = [[SYCacheManager shareCache] readModel:[LKDBModel class] where:where];
 //        LKDBModel *model = array.firstObject;
 //        [self.cacheManager deleteModel:model];
         // 方法3
 //        [self.cacheManager deleteAllModel:[LKDBModel class]];
+//        [[SYCacheManager shareCache] deleteAllModel:[LKDBModel class]];
         // 方法4
 //        [self.cacheManager deleteModel:model callback:^(BOOL result) {
 //
+//        }];
+//        [[SYCacheManager shareCache] deleteModel:model callback:^(BOOL result) {
+//        
 //        }];
     }
     else if (3 == indexPath.row)
@@ -170,32 +193,48 @@
         name = [NSString stringWithFormat:@"name:%@", name];
         NSString *where = [NSString stringWithFormat:@"name = '%@'", name];
         // 方法1
-        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+//        NSArray *array = [self.cacheManager readModel:[LKDBModel class] where:where];
+        NSArray *array = [[SYCacheManager shareCache] readModel:[LKDBModel class] where:where];
         NSLog(@"search count = %d", array.count);
         LKDBModel *model = array.firstObject;
         NSString *value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
         NSLog(@"model = %@", value);
         model.age += 5;
 //        [self.cacheManager updateModel:model];
+//        [[SYCacheManager shareCache] updateModel:model];
 //        value = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
 //        NSLog(@"model = %@", value);
         // 方法2
 //        [self.cacheManager updateModel:[LKDBModel class] value:@"age = 1, company = 'company:1'" where:where];
+//        [[SYCacheManager shareCache] updateModel:[LKDBModel class] value:@"age = 1, company = 'company:1'" where:where];
         // 方法3
-        [self.cacheManager updateModel:model callback:^(BOOL result) {
-            NSString *valuetmp = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
-            NSLog(@"model = %@", valuetmp);
-        }];
+//        [self.cacheManager updateModel:model callback:^(BOOL result) {
+//            NSString *valuetmp = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+//            NSLog(@"model = %@", valuetmp);
+//        }];
+//        [[SYCacheManager shareCache] updateModel:model callback:^(BOOL result) {
+//            NSString *valuetmp = [NSString stringWithFormat:@"name = %@, age = %d, company = %@", model.name, model.age, model.company];
+//            NSLog(@"model = %@", valuetmp);
+//        }];
     }
     else if (4 == indexPath.row)
     {
         // 创建表
-        [self.cacheManager newTableWithModel:[LKDBModel class]];
+//        [self.cacheManager newTableWithModel:[LKDBModel class]];
+        [[SYCacheManager shareCache] newTableWithModel:[LKDBModel class]];
     }
     else if (5 == indexPath.row)
     {
         // 删除表
-        [self.cacheManager deleteTableWithModel:[LKDBModel class]];
+//        [self.cacheManager deleteTableWithModel:[LKDBModel class]];
+        [[SYCacheManager shareCache] newTableWithModel:[LKDBModel class]];
+    }
+    else if (6 == indexPath.row)
+    {
+        // 新数据库
+        [SYCacheManager releaseCache];
+        NSString *userType = [NSString stringWithFormat:@"%@", @(arc4random() % 1000 + 1)];
+        [SYCacheManager initializeWithType:userType];
     }
 }
 
@@ -243,14 +282,14 @@
     return _editView;
 }
 
-- (SYCacheManager *)cacheManager
-{
-    if (_cacheManager == nil)
-    {
-        _cacheManager = [[SYCacheManager alloc] init];
-    }
-    return _cacheManager;
-}
+//- (SYCacheManager *)cacheManager
+//{
+//    if (_cacheManager == nil)
+//    {
+//        _cacheManager = [[SYCacheManager alloc] init];
+//    }
+//    return _cacheManager;
+//}
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {

@@ -8,6 +8,12 @@
 
 #import "SYCacheManager.h"
 
+// 类型定义
+static NSString *userId = nil;
+// 便于单例销毁控制
+static SYCacheManager *sharedManager;
+static dispatch_once_t onceToken;
+//
 static NSString *const dataName = @"SYFMDB.db";
 
 @interface SYCacheManager ()
@@ -29,6 +35,19 @@ static NSString *const dataName = @"SYFMDB.db";
 
 #pragma mark - 实例化
 
+// 初始化数据库类型
++ (void)initializeWithType:(NSString *)userType
+{
+    userId = userType;
+}
+
+// 销毁单例
++ (void)releaseCache
+{
+    sharedManager = nil;
+    onceToken=0l;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -39,9 +58,9 @@ static NSString *const dataName = @"SYFMDB.db";
 //        NSString *documentDirectory = [paths objectAtIndex:0];
 //        self.dataPath = [documentDirectory stringByAppendingPathComponent:dataName];
         
-        // 区分每个用户数据库
-        NSString *userId = @"";
-        NSString *userDBName = [NSString stringWithFormat:@"%@%@", userId, dataName];
+        // 区分每个类型数据库
+        NSString *userType = (userId ? userId : @"");
+        NSString *userDBName = [NSString stringWithFormat:@"%@%@", userType, dataName];
         self.dataHelper = [[LKDBHelper alloc] initWithDBName:userDBName];
     }
     
@@ -57,9 +76,6 @@ static NSString *const dataName = @"SYFMDB.db";
 /// 单例
 + (SYCacheManager *)shareCache
 {
-    static SYCacheManager *sharedManager;
-    static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         sharedManager = [[self alloc] init];
         assert(sharedManager != nil);

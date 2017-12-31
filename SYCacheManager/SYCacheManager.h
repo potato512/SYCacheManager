@@ -28,6 +28,11 @@
 
 @interface SYCacheManager : NSObject
 
+/// 数据库类型别名
++ (void)initializeWithType:(NSString *)userType;
+/// 销毁单例
++ (void)releaseCache;
+
 /// 单例
 + (SYCacheManager *)shareCache;
 
