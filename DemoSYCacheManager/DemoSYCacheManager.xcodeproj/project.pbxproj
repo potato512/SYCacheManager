@@ -13,6 +13,7 @@
 		A73FEB5A1F233B4D00163F29 /* LKDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A73FEB591F233B4D00163F29 /* LKDBModel.m */; };
 		A73FEBA61F23573300163F29 /* SYCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A73FEBA31F23573300163F29 /* SYCacheManager.m */; };
 		A73FEBA71F23573300163F29 /* SYNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A73FEBA51F23573300163F29 /* SYNetworkCache.m */; };
+		A771D48520BBFCD500E0343A /* SYFMDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D48420BBFCD500E0343A /* SYFMDBManager.m */; };
 		A7A629DE1F22E8EE001B9907 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A629DD1F22E8EE001B9907 /* main.m */; };
 		A7A629E11F22E8EE001B9907 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A629E01F22E8EE001B9907 /* AppDelegate.m */; };
 		A7A629E41F22E8EE001B9907 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A629E31F22E8EE001B9907 /* ViewController.m */; };
@@ -53,6 +54,8 @@
 		A73FEBA31F23573300163F29 /* SYCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYCacheManager.m; sourceTree = "<group>"; };
 		A73FEBA41F23573300163F29 /* SYNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNetworkCache.h; sourceTree = "<group>"; };
 		A73FEBA51F23573300163F29 /* SYNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNetworkCache.m; sourceTree = "<group>"; };
+		A771D48320BBFCD500E0343A /* SYFMDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYFMDBManager.h; sourceTree = "<group>"; };
+		A771D48420BBFCD500E0343A /* SYFMDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYFMDBManager.m; sourceTree = "<group>"; };
 		A7A629D91F22E8EE001B9907 /* DemoSYCacheManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoSYCacheManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7A629DD1F22E8EE001B9907 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A7A629DF1F22E8EE001B9907 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -120,6 +123,8 @@
 			children = (
 				A73FEBA21F23573300163F29 /* SYCacheManager.h */,
 				A73FEBA31F23573300163F29 /* SYCacheManager.m */,
+				A771D48320BBFCD500E0343A /* SYFMDBManager.h */,
+				A771D48420BBFCD500E0343A /* SYFMDBManager.m */,
 				A73FEBA41F23573300163F29 /* SYNetworkCache.h */,
 				A73FEBA51F23573300163F29 /* SYNetworkCache.m */,
 			);
@@ -381,6 +386,7 @@
 			files = (
 				A7A629E41F22E8EE001B9907 /* ViewController.m in Sources */,
 				A7A629E11F22E8EE001B9907 /* AppDelegate.m in Sources */,
+				A771D48520BBFCD500E0343A /* SYFMDBManager.m in Sources */,
 				A73FEB541F2306D600163F29 /* FMDBViewController.m in Sources */,
 				A73FEBA61F23573300163F29 /* SYCacheManager.m in Sources */,
 				A73FEB5A1F233B4D00163F29 /* LKDBModel.m in Sources */,

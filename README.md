@@ -156,6 +156,10 @@ NSString *userType = [NSString stringWithFormat:@"%@", @(arc4random() % 1000 + 1
 ~~~ 
 
 # 修改说明
+* 版本号：1.1.1
+  * 修改时间：20180528
+  * 添加功能类`SYFMDBManager`
+  
 * 版本号：1.1.0
   * 修改时间：20171231
   * 新增单例销毁方法
