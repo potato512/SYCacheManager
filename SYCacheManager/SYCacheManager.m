@@ -51,8 +51,7 @@ static NSString *const dataName = @"SYFMDB.db";
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
 //        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //        // NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 //        NSString *documentDirectory = [paths objectAtIndex:0];
@@ -88,8 +87,7 @@ static NSString *const dataName = @"SYFMDB.db";
 
 - (NSString *)dataPath
 {
-    if (_dataPath == nil)
-    {
+    if (_dataPath == nil) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         // NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *documentDirectory = [paths objectAtIndex:0];
@@ -104,8 +102,7 @@ static NSString *const dataName = @"SYFMDB.db";
 
 - (FMDatabase *)dataBase
 {
-    if (_dataBase == nil)
-    {
+    if (_dataBase == nil) {
         _dataBase = [FMDatabase databaseWithPath:self.dataPath];
     }
     return _dataBase;
@@ -118,8 +115,7 @@ static NSString *const dataName = @"SYFMDB.db";
 
 - (FMDatabaseQueue *)dataQueue
 {
-    if (_dataQueue == nil)
-    {
+    if (_dataQueue == nil) {
         _dataQueue = [FMDatabaseQueue databaseQueueWithPath:self.dataPath];
     }
     return _dataQueue;
@@ -247,13 +243,10 @@ static NSString *const dataName = @"SYFMDB.db";
 - (BOOL)newTableWithModel:(Class)class
 {
     BOOL isResult = NO;
-    if ([self.dataHelper isExistsWithTableName:NSStringFromClass(class) where:nil])
-    {
+    if ([self.dataHelper isExistsWithTableName:NSStringFromClass(class) where:nil]) {
         isResult = YES;
         NSLog(@"newTableWithModel = 已存在");
-    }
-    else
-    {
+    } else {
         isResult = [self.dataHelper createTableWithModelClass:class];
     }
     NSLog(@"newTableWithModel = %@", (isResult ? @"success" : @"error"));
@@ -280,16 +273,12 @@ static NSString *const dataName = @"SYFMDB.db";
 {
     BOOL isResult = NO;
 
-    if ([self.dataHelper isExistsModel:model])
-    {
+    if ([self.dataHelper isExistsModel:model]) {
         // 已存在时，先删除，且删除成功再保存
-        if ([self deleteModel:model])
-        {
+        if ([self deleteModel:model]) {
             isResult = [self.dataHelper insertWhenNotExists:model];
         }
-    }
-    else
-    {
+    } else {
         // 不存在时，直接保存
         isResult = [self.dataHelper insertWhenNotExists:model];
     }
@@ -300,27 +289,21 @@ static NSString *const dataName = @"SYFMDB.db";
 
 - (void)saveModel:(id)model callback:(void (^)(BOOL result))callback
 {
-    if ([self.dataHelper isExistsModel:model])
-    {
+    if ([self.dataHelper isExistsModel:model]) {
         // 已存在时，先删除，且删除成功再保存
-        if ([self deleteModel:model])
-        {
+        if ([self deleteModel:model]) {
             [self.dataHelper insertToDB:model callback:^(BOOL result) {
                 NSLog(@"saveModel = %@", (result ? @"success" : @"error"));
-                if (callback)
-                {
+                if (callback) {
                     callback(result);
                 }
             }];
         }
-    }
-    else
-    {
+    } else {
         // 不存在时，直接保存
         [self.dataHelper insertToDB:model callback:^(BOOL result) {
             NSLog(@"saveModel = %@", (result ? @"success" : @"error"));
-            if (callback)
-            {
+            if (callback) {
                 callback(result);
             }
         }];
@@ -340,8 +323,7 @@ static NSString *const dataName = @"SYFMDB.db";
 {
     [self.dataHelper updateToDB:model where:nil callback:^(BOOL result) {
         NSLog(@"updateModel = %@", (result ? @"success" : @"error"));
-        if (callback)
-        {
+        if (callback) {
             callback(result);
         }
     }];
@@ -370,8 +352,7 @@ static NSString *const dataName = @"SYFMDB.db";
 {
     [self.dataHelper deleteToDB:model callback:^(BOOL result) {
         NSLog(@"deleteModel = %@", (result ? @"success" : @"error"));
-        if (callback)
-        {
+        if (callback) {
             callback(result);
         }
     }];
@@ -388,8 +369,7 @@ static NSString *const dataName = @"SYFMDB.db";
 {
     [self.dataHelper deleteWithClass:class where:where callback:^(BOOL result) {
         NSLog(@"deleteModel = %@", (result ? @"success" : @"error"));
-        if (callback)
-        {
+        if (callback) {
             callback(result);
         }
     }];
@@ -441,8 +421,7 @@ static NSString *const dataName = @"SYFMDB.db";
 - (void)readModel:(Class)class where:(id)where orderBy:(NSString *)orderBy offset:(NSInteger)offset count:(NSInteger)count callback:(void (^)(NSMutableArray *array))callback
 {
     [self.dataHelper search:class where:where orderBy:orderBy offset:offset count:count callback:^(NSMutableArray *array) {
-        if (callback)
-        {
+        if (callback) {
             callback(array);
         }
     }];

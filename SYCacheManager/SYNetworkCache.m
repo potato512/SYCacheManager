@@ -31,8 +31,7 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         [[SYCacheManager shareCache] newTableWithModel:[SYNetworkCache class]];
     }
     
@@ -81,8 +80,7 @@
 /// 获取指定缓存数据
 - (NSData *)getNetworkCacheContentWithCacheKey:(NSString *)urlKey
 {
-    if (urlKey)
-    {
+    if (urlKey) {
         SYNetworkCache *cache;
 
         NSArray *array = [[SYCacheManager shareCache] readModel:[SYNetworkCache class] where:nil];
@@ -94,8 +92,7 @@
         
         // 存储的数据已过期
         NSComparisonResult compareResult = [[NSDate date] compare:expiryDate];
-        if (NSOrderedDescending == compareResult)
-        {
+        if (NSOrderedDescending == compareResult) {
             // 删除过期数据
             [self deleteNetworkCacheWithKey:urlKey];
             
@@ -114,8 +111,7 @@
 /// 清除指定的数据
 - (void)deleteNetworkCacheWithKey:(NSString *)urlKey
 {
-    if (urlKey == nil)
-    {
+    if (urlKey == nil) {
         return;
     }
     
@@ -143,21 +139,17 @@
 {
     NSUInteger size = 0;
     NSArray *array = [[SYCacheManager shareCache] readModel:[SYNetworkCache class] where:nil];
-    for (SYNetworkCache *model in array)
-    {
+    for (SYNetworkCache *model in array) {
         NSData *cacheData = model.cacheData;
         NSUInteger cacheSize = cacheData.length;
         size += cacheSize;
     }
     
     NSString *sizeStr = [NSString stringWithFormat:@"%ldB", size];
-    if (size > 1024 * 1024)
-    {
+    if (size > 1024 * 1024) {
         size = size / 1024 * 1024;
         sizeStr = [NSString stringWithFormat:@"%ldM", size];
-    }
-    else if (size > 1024)
-    {
+    } else if (size > 1024) {
         size = size / 1024;
         sizeStr = [NSString stringWithFormat:@"%ldKB", size];
     }
@@ -168,12 +160,9 @@
 /// 清除缓存（是否删除表）
 - (void)networkCacehClear:(BOOL)dropTable
 {
-    if (dropTable)
-    {
+    if (dropTable) {
         [[SYCacheManager shareCache] deleteTableWithModel:[SYNetworkCache class]];
-    }
-    else
-    {
+    } else {
         [[SYCacheManager shareCache] deleteModel:[SYNetworkCache class] where:nil];
     }
 }

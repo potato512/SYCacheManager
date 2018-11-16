@@ -24,8 +24,7 @@ static NSString *const dataName = @"SYFMDB.db";
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
 //        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //        // NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 //        NSString *documentDirectory = [paths objectAtIndex:0];
@@ -65,8 +64,7 @@ static NSString *const dataName = @"SYFMDB.db";
 // 创建表
 - (void)createTable:(Class)modelClass
 {
-    if (modelClass)
-    {
+    if (modelClass) {
 //        BOOL isResult = [self.dataHelper getTableCreatedWithClass:modelClass];
         BOOL isResult = [self.dataHelper createTableWithModelClass:modelClass];
         
@@ -78,8 +76,7 @@ static NSString *const dataName = @"SYFMDB.db";
 // 删除表
 - (BOOL)dropTable:(Class)modelClass
 {
-    if (modelClass)
-    {
+    if (modelClass) {
         BOOL isResult = [self.dataHelper dropTableWithClass:modelClass];
         
         NSString *resultStr = [NSString stringWithFormat:@"删除表(%@)%@", NSStringFromClass(modelClass), (isResult ? @"成功" : @"失败")];
@@ -94,23 +91,20 @@ static NSString *const dataName = @"SYFMDB.db";
 // 删除表-block
 - (void)dropTable:(Class)modelClass complete:(void (^)(BOOL isSuccess))complete
 {
-    if (modelClass)
-    {
+    if (modelClass) {
         BOOL isResult = [self.dataHelper dropTableWithClass:modelClass];
         
         NSString *resultStr = [NSString stringWithFormat:@"删除表(%@)%@", NSStringFromClass(modelClass), (isResult ? @"成功" : @"失败")];
         NSLog(@"%@", resultStr);
         
-        if (complete)
-        {
+        if (complete) {
             complete(isResult);
         }
         
         return;
     }
     
-    if (complete)
-    {
+    if (complete) {
         complete(NO);
     }
 }
@@ -127,8 +121,7 @@ static NSString *const dataName = @"SYFMDB.db";
 // 保存数据
 - (BOOL)saveDataWithData:(NSObject *)model
 {
-    if (model)
-    {
+    if (model) {
         // 先删除，后保存
         [self deleteDataWithData:model];
         BOOL isResult = [self.dataHelper insertWhenNotExists:model];
@@ -144,20 +137,16 @@ static NSString *const dataName = @"SYFMDB.db";
 // 保存数据-block
 - (void)saveDataWithData:(NSObject *)model complete:(void (^)(BOOL isSuccess))complete
 {
-    if (model)
-    {
+    if (model) {
         [self.dataHelper insertWhenNotExists:model callback:^(BOOL result) {
-            if (complete)
-            {
+            if (complete) {
                 complete(result);
             }
         }];
-        
         return;
     }
     
-    if (complete)
-    {
+    if (complete) {
         complete(NO);
     }
 }
@@ -165,8 +154,7 @@ static NSString *const dataName = @"SYFMDB.db";
 // 更新数据
 - (BOOL)updateDataWithData:(NSObject *)model
 {
-    if (model)
-    {
+    if (model) {
         BOOL isResult = [self.dataHelper updateToDB:model where:nil];
         NSString *resultStr = [NSString stringWithFormat:@"更新数据%@", (isResult ? @"成功" : @"失败")];
         NSLog(@"%@", resultStr);
@@ -180,20 +168,16 @@ static NSString *const dataName = @"SYFMDB.db";
 // 更新数据-block
 - (void)updateDataWithData:(NSObject *)model complete:(void (^)(BOOL isSuccess))complete
 {
-    if (model)
-    {
+    if (model) {
         [self.dataHelper updateToDB:model where:nil callback:^(BOOL result) {
-            if (complete)
-            {
+            if (complete) {
                 complete(result);
             }
         }];
-        
         return ;
     }
     
-    if (complete)
-    {
+    if (complete) {
         complete(NO);
     }
 }
@@ -214,8 +198,7 @@ static NSString *const dataName = @"SYFMDB.db";
 // 获取指定数据
 - (NSArray *)getDataWithClass:(Class)modelClass where:(NSString *)where
 {
-    if (modelClass)
-    {
+    if (modelClass) {
         NSMutableArray *array = [self.dataHelper search:modelClass where:where orderBy:nil offset:0 count:1000];
         return array;
     }
@@ -226,11 +209,9 @@ static NSString *const dataName = @"SYFMDB.db";
 // 获取指定数据-block
 - (void)getAllDataWithClass:(Class)modelClass where:(NSString *)where complete:(void (^)(BOOL isSuccess))complete
 {
-    if (modelClass)
-    {
+    if (modelClass) {
         [self.dataHelper search:modelClass where:where orderBy:nil offset:0 count:1000 callback:^(NSMutableArray *array) {
-            if (complete)
-            {
+            if (complete) {
                 complete(array);
             }
         }];
@@ -238,8 +219,7 @@ static NSString *const dataName = @"SYFMDB.db";
         return;
     }
     
-    if (complete)
-    {
+    if (complete) {
         complete(nil);
     }
 }
@@ -247,20 +227,16 @@ static NSString *const dataName = @"SYFMDB.db";
 // 删除数据
 - (BOOL)deleteDataWithData:(NSObject *)model
 {
-    if (model)
-    {
+    if (model) {
         BOOL isExit = [self.dataHelper isExistsModel:model];
-        if (isExit)
-        {
+        if (isExit) {
             BOOL isResult = [self.dataHelper deleteToDB:model];
             
             NSString *resultStr = [NSString stringWithFormat:@"删除数据%@", (isResult ? @"成功" : @"失败")];
             NSLog(@"%@", resultStr);
             
             return isResult;
-        }
-        else
-        {
+        } else {
             return NO;
         }
     }
@@ -271,24 +247,18 @@ static NSString *const dataName = @"SYFMDB.db";
 // 删除数据-block
 - (void)deleteDataWithData:(NSObject *)model complete:(void (^)(BOOL isSuccess))complete
 {
-    if (model)
-    {
+    if (model) {
         BOOL isExit = [self.dataHelper isExistsModel:model];
-        if (isExit)
-        {
+        if (isExit) {
             [self.dataHelper deleteToDB:model callback:^(BOOL result) {
-                if (complete)
-                {
+                if (complete) {
                     complete(result);
                 }
             }];
             
             return ;
-        }
-        else
-        {
-            if (complete)
-            {
+        } else {
+            if (complete) {
                 complete(NO);
             }
             
@@ -296,8 +266,7 @@ static NSString *const dataName = @"SYFMDB.db";
         }
     }
     
-    if (complete)
-    {
+    if (complete) {
         complete(NO);
     }
 }
@@ -318,8 +287,7 @@ static NSString *const dataName = @"SYFMDB.db";
 {
     BOOL isResult = [self deleteAllData];
  
-    if (complete)
-    {
+    if (complete) {
         complete(isResult);
     }
 }
